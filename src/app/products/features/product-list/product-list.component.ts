@@ -9,6 +9,7 @@ import { DialogModule } from 'primeng/dialog';
 import {CurrencyPipe, DatePipe} from "@angular/common";
 import {RatingModule} from "primeng/rating";
 import {FormsModule} from "@angular/forms";
+import {CartService} from "../../data-access/cart.service";
 
 const emptyProduct: Product = {
   id: 0,
@@ -36,6 +37,7 @@ const emptyProduct: Product = {
 })
 export class ProductListComponent implements OnInit {
   private readonly productsService = inject(ProductsService);
+  private readonly cartService = inject(CartService);
 
   public readonly products = this.productsService.products;
 
@@ -70,6 +72,10 @@ export class ProductListComponent implements OnInit {
       this.productsService.update(product).subscribe();
     }
     this.closeDialog();
+  }
+
+  public addToCart(product: Product) {
+    this.cartService.addToCart(product);
   }
 
   public onCancel() {
