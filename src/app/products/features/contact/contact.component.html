@@ -1,0 +1,57 @@
+<div class="card">
+  <h2>Contactez-nous</h2>
+
+  @if (!submitted) {
+    <form [formGroup]="contactForm" (ngSubmit)="onSubmit()">
+      <div class="field">
+        <label for="email">Email</label>
+        <input
+          pInputText
+          id="email"
+          formControlName="email"
+          [class]="{'ng-invalid': contactForm.get('email')?.invalid && contactForm.get('email')?.touched}">
+        @if (contactForm.get('email')?.hasError('required')) {
+          <small class="error">Email requis</small>
+        }
+        @if (contactForm.get('email')?.hasError('email')) {
+          <small class="error">Format invalide</small>
+        }
+      </div>
+
+      <div class="field">
+        <label for="message">Message</label>
+        <textarea
+          pInputTextarea
+          id="message"
+          formControlName="message"
+          [class]="{'ng-invalid': contactForm.get('message')?.invalid && contactForm.get('message')?.touched}">
+        </textarea>
+        @if (contactForm.get('message')?.hasError('required')) {
+          <small class="error">Message requis</small>
+        }
+        @if (contactForm.get('message')?.hasError('maxlength')) {
+          <small class="error">300 caractères maximum</small>
+        }
+        <small>{{ contactForm.get('message')?.value?.length || 0 }}/300</small>
+      </div>
+
+      <button
+        pButton
+        type="submit"
+        label="Envoyer"
+        [disabled]="contactForm.invalid">
+      </button>
+    </form>
+  } @else {
+    <div class="success-message">
+      <p-message severity="success" text="Demande de contact envoyée avec succès"></p-message>
+      <button
+        pButton
+        label="Envoyer un nouveau message"
+        icon="pi pi-refresh"
+        class="mt-3"
+        (click)="newMessage()">
+      </button>
+    </div>
+  }
+</div>
