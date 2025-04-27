@@ -22,3 +22,17 @@
     color: #C63737;
   }
 }
+
+:host ::ng-deep {
+  .p-button-sm {
+    width: 1.5rem;
+    height: 1.5rem;
+  }
+
+  .quantity-controls {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin: 0 0.5rem;
+  }
+}

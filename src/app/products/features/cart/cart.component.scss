@@ -20,3 +20,13 @@
     transform: translate(25%, -25%);
   }
 }
+
+.cart-items {
+  max-height: 60vh;
+  overflow-y: auto;
+
+  .p-button-sm {
+    width: 1.5rem;
+    height: 1.5rem;
+  }
+}

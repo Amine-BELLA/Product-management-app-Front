@@ -6,7 +6,7 @@ import { ButtonModule } from "primeng/button";
 import { CardModule } from "primeng/card";
 import { DataViewModule } from 'primeng/dataview';
 import { DialogModule } from 'primeng/dialog';
-import {CurrencyPipe, DatePipe} from "@angular/common";
+import {CurrencyPipe, DatePipe, NgIf} from "@angular/common";
 import {RatingModule} from "primeng/rating";
 import {FormsModule} from "@angular/forms";
 import {CartService} from "../../data-access/cart.service";
@@ -33,7 +33,7 @@ const emptyProduct: Product = {
   templateUrl: "./product-list.component.html",
   styleUrls: ["./product-list.component.scss"],
   standalone: true,
-  imports: [DataViewModule, CardModule, ButtonModule, DialogModule, ProductFormComponent, DatePipe, CurrencyPipe, RatingModule, FormsModule],
+  imports: [DataViewModule, CardModule, ButtonModule, DialogModule, ProductFormComponent, DatePipe, CurrencyPipe, RatingModule, FormsModule, NgIf],
 })
 export class ProductListComponent implements OnInit {
   private readonly productsService = inject(ProductsService);
@@ -74,8 +74,26 @@ export class ProductListComponent implements OnInit {
     this.closeDialog();
   }
 
-  public addToCart(product: Product) {
-    this.cartService.addToCart(product);
+  getQuantity(productId: number): number {
+    return this.cartService.getProductQuantity(productId);
+  }
+
+  updateQuantity(productId: number, change: number): void {
+    const currentQuantity = this.getQuantity(productId);
+    const newQuantity = currentQuantity + change;
+
+    if (newQuantity <= 0) {
+      this.cartService.removeFromCart(productId);
+    } else {
+      const product = this.products().find(p => p.id === productId);
+      if (product) {
+        if (currentQuantity === 0) {
+          this.cartService.addToCart(product);
+        } else {
+          this.cartService.updateQuantity(productId, change);
+        }
+      }
+    }
   }
 
   public onCancel() {

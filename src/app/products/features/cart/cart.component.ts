@@ -19,7 +19,7 @@ export class CartComponent {
   cartItems = this.cartService.getCartItems();
 
   get cartItemCount() {
-    return this.cartItems().length;
+    return this.cartService.getTotalItems();
   }
 
   toggleCart() {
@@ -28,5 +28,16 @@ export class CartComponent {
 
   removeFromCart(productId: number) {
     this.cartService.removeFromCart(productId);
+  }
+
+  updateQuantity(productId: number, change: number) {
+    this.cartService.updateQuantity(productId, change);
+  }
+
+  getTotalPrice() {
+    return this.cartItems().reduce(
+      (sum, item) => sum + (item.product.price * item.quantity),
+      0
+    );
   }
 }

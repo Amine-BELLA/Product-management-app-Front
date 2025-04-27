@@ -8,16 +8,38 @@
     <p>Votre panier est vide.</p>
   } @else {
     <div class="cart-items">
-      @for (item of cartItems(); track item.id) {
+      @for (item of cartItems(); track item.product.id) {
         <div class="flex justify-content-between align-items-center mb-3">
-          <div>
-            <span class="font-medium">{{ item.name }}</span> -
-            <span>{{ item.price | currency:'EUR' }}</span>
+          <div class="flex align-items-center gap-3">
+            <span class="font-medium">{{ item.product.name }}</span>
+            <span>{{ item.product.price | currency:'EUR' }}</span>
           </div>
-          <button pButton icon="pi pi-trash" class="p-button-rounded p-button-text p-button-danger"
-                  (click)="removeFromCart(item.id)"></button>
+          <div class="flex align-items-center gap-2">
+            <button
+              pButton
+              icon="pi pi-minus"
+              class="p-button-rounded p-button-text p-button-sm"
+              (click)="updateQuantity(item.product.id, -1)"
+            ></button>
+            <span>{{ item.quantity }}</span>
+            <button
+              pButton
+              icon="pi pi-plus"
+              class="p-button-rounded p-button-text p-button-sm"
+              (click)="updateQuantity(item.product.id, 1)"
+            ></button>
+            <button
+              pButton
+              icon="pi pi-trash"
+              class="p-button-rounded p-button-text p-button-sm p-button-danger"
+              (click)="removeFromCart(item.product.id)"
+            ></button>
+          </div>
         </div>
       }
+      <div class="border-top-1 mt-3 pt-3">
+        <strong>Total : {{ getTotalPrice() | currency:'EUR' }}</strong>
+      </div>
     </div>
   }
 </p-dialog>

@@ -49,8 +49,18 @@
                         (onClick)="onUpdate(product)"></p-button>
               <p-button icon="pi pi-trash" label="Supprimer" severity="danger"
                         (onClick)="onDelete(product)"></p-button>
-              <p-button icon="pi pi-shopping-cart" label="Ajouter au panier"
-                        (onClick)="addToCart(product)"></p-button>
+              <div class="flex align-items-center gap-2" *ngIf="getQuantity(product.id) > 0">
+                <button pButton icon="pi pi-minus"
+                        class="p-button-rounded p-button-text p-button-sm"
+                        (click)="updateQuantity(product.id, -1)"></button>
+                <span>{{ getQuantity(product.id) }}</span>
+                <button pButton icon="pi pi-plus"
+                        class="p-button-rounded p-button-text p-button-sm"
+                        (click)="updateQuantity(product.id, 1)"></button>
+              </div>
+              <p-button *ngIf="getQuantity(product.id) === 0"
+                        label="Ajouter"
+                        (onClick)="updateQuantity(product.id, 1)"/>
             </div>
           </div>
         </ng-template>
