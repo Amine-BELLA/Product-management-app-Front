@@ -7,7 +7,6 @@ export class CartService {
 
   addToCart(product: Product) {
     this.cartItems.update(items => [...items, product]);
-    console.log(this.cartItems())
   }
 
   removeFromCart(productId: number) {
@@ -15,7 +14,7 @@ export class CartService {
   }
 
   getCartItems() {
-    return this.cartItems();
+    return this.cartItems;
   }
 
   getCartItemCount() {

@@ -1,0 +1,22 @@
+.cart-icon-container {
+  position: relative;
+  cursor: pointer;
+  padding: 0.5rem;
+  border-radius: 50%;
+  transition: background-color 0.3s;
+
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.04);
+  }
+
+  i {
+    font-size: 2rem;
+  }
+
+  ::ng-deep .p-badge {
+    position: absolute;
+    top: 0;
+    right: 0;
+    transform: translate(25%, -25%);
+  }
+}

@@ -1,0 +1,23 @@
+<div class="cart-icon-container" (click)="toggleCart()">
+  <i class="pi pi-shopping-cart"></i>
+  <p-badge [value]="cartItemCount" severity="danger"></p-badge>
+</div>
+
+<p-dialog [(visible)]="showCart" header="Votre Panier" [style]="{ width: '50vw' }">
+  @if (cartItems().length === 0) {
+    <p>Votre panier est vide.</p>
+  } @else {
+    <div class="cart-items">
+      @for (item of cartItems(); track item.id) {
+        <div class="flex justify-content-between align-items-center mb-3">
+          <div>
+            <span class="font-medium">{{ item.name }}</span> -
+            <span>{{ item.price | currency:'EUR' }}</span>
+          </div>
+          <button pButton icon="pi pi-trash" class="p-button-rounded p-button-text p-button-danger"
+                  (click)="removeFromCart(item.id)"></button>
+        </div>
+      }
+    </div>
+  }
+</p-dialog>
