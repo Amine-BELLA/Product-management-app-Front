@@ -2,7 +2,29 @@
 
 <p-button label="Créer produit" (onClick)="onCreate()" class="block text-center"/>
 
-<p-dataView #dv [value]="products()">
+<div class="filter-container">
+  <div class="search-field">
+    <span class="p-input-icon-left">
+      <input pInputText
+             type="text"
+             placeholder="Rechercher produits..."
+             (input)="updateSearch($event)"
+             class="search-input">
+    </span>
+  </div>
+
+  <div class="price-filter">
+    <label>Prix minimum: {{ minPrice | currency:'EUR' }}</label>
+    <p-slider [(ngModel)]="minPrice"
+              [min]="0"
+              [max]="1000"
+              [step]="10"
+              (onSlideEnd)="updateMinPrice($event)">
+    </p-slider>
+  </div>
+</div>
+
+<p-dataView #dv [value]="productsService.filteredProducts()">
   <ng-template pTemplate="list" let-products>
     @for (product of products; track product) {
       <p-card [header]="product.name" [subheader]="product.category" class="mb-4">

@@ -10,6 +10,7 @@ import {CurrencyPipe, DatePipe, NgIf} from "@angular/common";
 import {RatingModule} from "primeng/rating";
 import {FormsModule} from "@angular/forms";
 import {CartService} from "../../data-access/cart.service";
+import {SliderModule, SliderSlideEndEvent} from "primeng/slider";
 
 const emptyProduct: Product = {
   id: 0,
@@ -33,10 +34,10 @@ const emptyProduct: Product = {
   templateUrl: "./product-list.component.html",
   styleUrls: ["./product-list.component.scss"],
   standalone: true,
-  imports: [DataViewModule, CardModule, ButtonModule, DialogModule, ProductFormComponent, DatePipe, CurrencyPipe, RatingModule, FormsModule, NgIf],
+  imports: [DataViewModule, CardModule, ButtonModule, DialogModule, ProductFormComponent, DatePipe, CurrencyPipe, RatingModule, FormsModule, NgIf, SliderModule],
 })
 export class ProductListComponent implements OnInit {
-  private readonly productsService = inject(ProductsService);
+  protected readonly productsService = inject(ProductsService);
   private readonly cartService = inject(CartService);
 
   public readonly products = this.productsService.products;
@@ -44,6 +45,7 @@ export class ProductListComponent implements OnInit {
   public isDialogVisible = false;
   public isCreation = false;
   public readonly editedProduct = signal<Product>(emptyProduct);
+  minPrice = 0;
 
   ngOnInit() {
     this.productsService.get().subscribe();
@@ -93,6 +95,24 @@ export class ProductListComponent implements OnInit {
           this.cartService.updateQuantity(productId, change);
         }
       }
+    }
+  }
+
+  updateSearch(event: Event) {
+    const searchTerm = (event.target as HTMLInputElement).value;
+    this.productsService.filterCriteria.update(current => ({
+      ...current,
+      searchTerm
+    }));
+  }
+
+  updateMinPrice(event: SliderSlideEndEvent) {
+    if (event.value !== undefined) {
+      this.minPrice = event.value;
+      this.productsService.filterCriteria.update(current => ({
+        ...current,
+        minPrice: event.value!
+      }));
     }
   }
 

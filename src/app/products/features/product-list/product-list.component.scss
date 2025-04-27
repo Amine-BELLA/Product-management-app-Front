@@ -36,3 +36,33 @@
     margin: 0 0.5rem;
   }
 }
+
+.filter-container {
+  display: flex;
+  gap: 2rem;
+  align-items: center;
+  margin-bottom: 2rem;
+  margin-top: 1rem;
+  padding: 1rem;
+  background: var(--surface-ground);
+  border-radius: 12px;
+
+  .search-field {
+    flex: 2;
+
+    .search-input {
+      width: 100%;
+    }
+  }
+
+  .price-filter {
+    flex: 1;
+    min-width: 200px;
+
+    label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 500;
+    }
+  }
+}
