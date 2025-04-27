@@ -3,3 +3,22 @@
     height: 100%;
     overflow: auto;
 }
+
+.inventory-status {
+  padding: 0.25rem 0.5rem;
+  border-radius: 3px;
+  font-size: 0.875rem;
+
+  &-instock {
+    background: #C8E6C9;
+    color: #256029;
+  }
+  &-lowstock {
+    background: #FEEDAF;
+    color: #8A5340;
+  }
+  &-outofstock {
+    background: #FFCDD2;
+    color: #C63737;
+  }
+}

@@ -3,21 +3,60 @@
 <p-button label="Créer produit" (onClick)="onCreate()" class="block text-center"/>
 
 <p-dataView #dv [value]="products()">
-    <ng-template pTemplate="list" let-products>
-        @for (product of products; track product) {
-            <p-card class="block mb-2">
-                <span class="font-medium text-secondary text-sm">{{ product.category }}</span>
-                <div class="text-lg font-medium text-900 mt-2">{{ product.name }}</div>
+  <ng-template pTemplate="list" let-products>
+    @for (product of products; track product) {
+      <p-card [header]="product.name" [subheader]="product.category" class="mb-4">
+        <div class="flex gap-4">
+          <div class="w-1/3">
+            <img [src]="'assets/images/products/' + product.image"
+                 [alt]="product.name"
+                 class="w-full border-round"
+                 style="max-height: 200px; object-fit: cover"/>
+          </div>
 
-                <ng-template pTemplate="footer">
-                    <div class="flex gap-3 mt-1">
-                        <p-button label="Modifier" severity="secondary" (onClick)="onUpdate(product)"/>
-                        <p-button label="Supprimer" severity="danger" (onClick)="onDelete(product)" />
-                    </div>
-                </ng-template>
-            </p-card>
-        }
-    </ng-template>
+          <div class="w-2/3">
+            <p class="text-lg font-medium text-900 mb-2">{{ product.name }}</p>
+            <p class="text-color-secondary mb-3">{{ product.description }}</p>
+
+            <div class="grid">
+              <div class="col-6">
+                <p><span class="font-semibold">Prix :</span> {{ product.price | currency:'EUR' }}</p>
+                <p><span class="font-semibold">Statut :</span>
+                  <span [class]="'inventory-status inventory-status-' + product.inventoryStatus.toLowerCase()">
+                                        {{ product.inventoryStatus }}
+                                    </span>
+                </p>
+              </div>
+              <div class="col-6">
+                <p><span class="font-semibold">Référence :</span> {{ product.internalReference }}</p>
+                <p><span class="font-semibold">Note :</span>
+                  <p-rating [(ngModel)]="product.rating" [readonly]="true" [cancel]="false"></p-rating>
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <ng-template pTemplate="footer">
+          <div class="flex justify-content-between align-items-center">
+            <div>
+                            <span class="text-sm text-color-secondary">
+                                Mis à jour le {{ product.updatedAt | date:'dd/MM/yyyy' }}
+                            </span>
+            </div>
+            <div class="flex gap-3">
+              <p-button icon="pi pi-pencil" label="Modifier" severity="secondary"
+                        (onClick)="onUpdate(product)"></p-button>
+              <p-button icon="pi pi-trash" label="Supprimer" severity="danger"
+                        (onClick)="onDelete(product)"></p-button>
+              <p-button icon="pi pi-shopping-cart" label="Ajouter au panier"
+                        (onClick)="addToCart(product)"></p-button>
+            </div>
+          </div>
+        </ng-template>
+      </p-card>
+    }
+  </ng-template>
 </p-dataView>
 
 <p-dialog [(visible)]="isDialogVisible"
